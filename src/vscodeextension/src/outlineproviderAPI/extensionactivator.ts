@@ -98,7 +98,7 @@ export async function executeLocationDefinerProvider(uri: vscode.Uri,
 
   if (provider instanceof Error) {
     vscode.window.showWarningMessage (provider.message);
-    return new Promise (((resolve, reject) => {return [];}));
+    return Promise.resolve([]);
   }
 
   let outlineRanges = provider.provideLocationDefiner(document, position);
@@ -116,7 +116,7 @@ export function executeDefinitionProviderForPositionOnDocument(
 
   if (provider instanceof Error) {
     vscode.window.showWarningMessage (provider.message);
-    return new Promise (((resolve, reject) => {return [];}));
+    return Promise.resolve([]);
   }
 
   let symbols = provider.provideDefinitionOutline(document, position);
@@ -137,13 +137,29 @@ export async function executeDocumentDefinitionProvider(
 
   if (provider instanceof Error) {
     vscode.window.showWarningMessage (provider.message);
-    return new Promise (((resolve, reject) => {return [];}));
+    // return an empty Outline.File so callers receive a valid object instead of waiting on a never-resolving Promise
+    const f = new Outline.File();
+    f.uri = document.uri.toString();
+    f.language = document.languageId;
+    f.parts = [];
+    return Promise.resolve(f);
   }
 
-
-  let fileSymbol = provider.provideDocumentOutline(document);
-
-  return fileSymbol;
+  try {
+    let fileSymbol = await provider.provideDocumentOutline(document);
+    return fileSymbol;
+  } catch (e) {
+    // log and return undefined so callers can handle gracefully
+  const msg = ((e as any) && (e as any).message) ? (e as any).message : ('' + e);
+  const stack = ((e as any) && (e as any).stack) ? (e as any).stack : '';
+    vscode.window.showWarningMessage('executeDocumentDefinitionProvider failed: ' + msg + '\n' + stack);
+    // return an empty Outline.File as a graceful fallback (so UI can open)
+    const f = new Outline.File();
+    f.uri = document.uri.toString();
+    f.language = document.languageId;
+    f.parts = [];
+    return f;
+  }
 }
 
 
