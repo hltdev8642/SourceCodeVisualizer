@@ -1,234 +1,4 @@
-#connectionCanvas{
-  z-index: 2;
-  position: absolute;
-  top:0;
-  left:0;
-  border: 0px;
-  pointer-events: none;
-}.VpwCodeEditor{
-  font-family: monospace;
-  line-height: 130%;
 
-  background-color: var(--editor-background);
-
-  margin-left: 5px;
-  margin-bottom: 5px;
-  width:calc(100% - 10px);
-
-  white-space: pre;
-
-  padding-right: 3px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-
-  border-width: 0px;
-  /* border: 0px solid black; */
-
-  overflow: auto; /* <=> scroll + hidden*/
-
-  counter-reset: vpwcodeeditorline;
-}
-
-.VpwCodeEditor div:before {
-  content: counter(vpwcodeeditorline);
-  font-size: 80%;
-  color: var(--editor-line-numbers);
-  vertical-align: middle;
-}
-
-.VpwCodeEditor div{
-  counter-increment: vpwcodeeditorline;
-}.btnOpenDefinition {
-  /*float: right;*/
-  vertical-align: middle;
-  border-radius: 2px;
-  font-family: "Arial";
-  border:  none;
-  background: none;
-  color: var(--primary-1-foreground);
-  width: 13px;
-  height: 13px;
-  cursor:pointer;
-  padding: 0px;
-  padding-bottom: 1px;
-
-
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.btnOpenDefinition:active{
-  border-top-color:#000;
-  border-left-color:#000;
-  border-bottom-color:#CCC;
-  border-right-color:#CCC;
-}
-
-.btnOpenDefinition:focus{
-  border: 1px rgb(0, 133, 185) dotted;
-  border-radius: 2px;
-  outline: none;
-}
-
-.VpwBtnOpenDefinition_ON,
-.VpwBtnOpenDefinition_ON:focus,
-.VpwBtnOpenDefinition_ON:hover
-{
-  background-color: var(--definition-connector-circle-color);
-  border: 0px;
-  border-radius: 10px;
-}
-.Window_Clientarea_BlocksArea{
-  background-color: rgba(187, 187, 187, 0.082);
-  padding:2px;
-}
-
-.Window_Clientarea_OpenDeclarationBlock{
-  /*border-style: solid;
-  border-width: 1px;
-  border-color: grey white white grey;*/
-  font-family: monospace;
-
-  white-space: nowrap;
-
-  padding-top:7px;
-  padding-bottom:7px;
-  padding-left:10px;
-  padding-right:10px;
-  margin: 3px;
-
-  background: var(--declaration-button-background);
-  border-radius: 3px;
-
-  user-select: none;
-
-}
-
-.Window_Clientarea_OpenDeclarationBlock:hover{
-  background: var(--declaration-button-background-hover);
-}
-
-.Window_Clientarea_OpenDeclarationBlock:active{
-  background:  var(--declaration-button-background-active);
-}
-
-
-.viewEntityRepr_OutlineKindIndicator {
-  color: var(--source-code-entity-class);
-  font-size: 80%;
-  position:relative;
-  top: -1px;
-  left: -1.5px;
-  display: inline-block;
-  border-right: 1px solid black;
-  padding-right: 2px;
-  margin-right: 1px;
-  /*border-radius: 10px;
-  min-width: 5px;
-  margin-right: 2px;
-
-  padding-left:4px;
-  box-shadow: 0px 0px 1px black;*/
-}.VpwButtonMovableBtn,
-.VpwButtonMovable {
-  padding-left: 1px;
-  padding-right: 1px;
-  margin: 0px;
-  /*border: 1px solid grey;*/
-  border-width: 1px;
-  border-radius: 2px;
-  width: 13px;
-  height: 13px;
-  color: var(--primary-1-foreground);
-  border-color: var(--primary-1-border);
-  background: var(--primary-1-background);
-
-  /* remove focus shadow*/
-  box-shadow: none;
-}
-
-.VpwButtonMovableBtn span {
-  position: relative;
-  top: -4px;
-}
-
-
-
-.VpwButtonMovableBtn:hover {
-  background-color: var(--primary-1-background-hover);
-}
-
-
-.VpwButtonMovableBtn button::-moz-focus-inner {
-  padding: 0px;
-  border: 0px;
-  margin: 0px;
-}
-.VpwMessageWindow .Window_Titlearea
-{
-  padding-right: 12px;
-  white-space: nowrap;
-  font-weight: bold;
-
-  min-width: 200px;
-}
-
-.VpwMessageWindow.Error {
-  background-color: var(--message-error-background);
-  color: var(--message-error-foreground);
-}
-
-.VpwMessageWindow.Error .Window_Titlearea::before {
-  content: "🧐 ";
-}
-
-.VpwMessageWindow.Warning
-{
-  background-color:var(--message-warning-background);
-  color: var(--message-warning-foreground);
-}
-
-.VpwMessageWindow.Warning .Window_Titlearea::before {
-  content: "🤔 ";
-}
-
-.VpwMessageWindow.Info
-{
-  background-color: var(--message-info-background);
-  color: var(--message-info-foreground);
-}
-.VpwMessageWindow.Info .Window_Titlearea::before {
-  content: "🤫 ";
-}
-
-
-.VpwMessageWindow .Window_Clientarea
-{
-  padding-top:    7px;
-  padding-bottom: 7px;
-  padding-left:  12px;
-  padding-right: 12px;
-}
-.VpwViewEntityWindow {
-  animation-name: VpwViewEntityWindowOpen;
-  animation-duration: 0.3s;
-}
-
-@keyframes VpwViewEntityWindowOpen{
-
-  from{
-    opacity: 0;
-    transform: scaleY(0.9) scaleX(1.1) translate(-20%,0px);
-  }
-  to{
-    opacity: 1;
-    transform: scaleY(1) scaleX(1) translate(0px,0px);
-  }
-}
 
 body{
   font-size:80%;
@@ -311,6 +81,104 @@ textarea{
 
  color: var(--primary-1-foreground);
 }
+/*!
+  Theme: Default
+  Description: Original highlight.js style
+  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Maintainer: @highlightjs/core-team
+  Website: https://highlightjs.org/
+  License: see project LICENSE
+  Touched: 2021
+*/
+pre code.hljs{display:block;overflow-x:auto;padding:1em}
+code.hljs{padding:3px 5px}
+
+.hljs-emphasis{font-style:italic}
+.hljs-strong{font-weight:700}
+
+.hljs{background:#f0f0f0;color:#444}
+.hljs-comment{color:#078007}
+.hljs-punctuation,.hljs-tag{color:#444a}
+.hljs-tag .hljs-attr,.hljs-tag .hljs-name{color:#444}
+.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-name,.hljs-selector-tag{color:#3507fe;}
+.hljs-deletion,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-string,.hljs-template-tag,.hljs-type{color:#800}
+.hljs-number{color:#098658;}
+.hljs-section,.hljs-title{color:#800;font-weight:700}
+.hljs-link,.hljs-operator,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{color:#bc6060}
+.hljs-literal{color:#78a960}
+.hljs-addition,.hljs-bullet,.hljs-code{color:#397300}
+.hljs-built_in {color:rgb(59, 55, 0)}
+.hljs-meta{color:#1f7199}
+.hljs-meta .hljs-string{color:#4d99bf}
+
+
+/*!
+  Theme: dark
+  Description: Dark Theme partly copied from VSCode dark theme
+  Author: DarkTrick(created content here)
+*/
+.theme-dark .hljs {
+  background: #2b2b2b;
+  color: #f8f8f2;
+}
+
+.theme-dark .hljs-comment,
+.theme-dark .hljs-quote {
+  color: #6a9955;
+}
+
+.theme-dark .hljs-variable,
+.theme-dark .hljs-template-variable,
+.theme-dark .hljs-tag,
+.theme-dark .hljs-name,
+.theme-dark .hljs-selector-id,
+.theme-dark .hljs-selector-class,
+.theme-dark .hljs-regexp,
+.theme-dark .hljs-deletion {
+  color: #90d9da;
+}
+
+
+.theme-dark .hljs-number,
+.theme-dark .hljs-built_in,
+.theme-dark .hljs-literal,
+.theme-dark .hljs-type,
+.theme-dark .hljs-params,
+.theme-dark .hljs-meta,
+.theme-dark .hljs-link {
+  color: #a7cb8e;
+}
+
+.theme-dark .hljs-params {
+  color: #729db4;
+}
+
+.theme-dark .hljs-attr,
+.theme-dark .hljs-attribute {
+  color: #9cdcf0;
+}
+
+.theme-dark .hljs-string,
+.theme-dark .hljs-symbol,
+.theme-dark .hljs-bullet,
+.theme-dark .hljs-addition {
+  color: #c97e63;
+}
+
+.theme-dark .hljs-title,
+.theme-dark .hljs-section {
+  color: #f0c674;
+}
+
+.theme-dark .hljs-keyword,
+.theme-dark .hljs-selector-tag {
+  color: #569cd6;
+}
+
+.theme-dark .hljs-function {
+  color: #dcdcaa;
+}
+
 .button_flat {
   padding: 0px;
   min-width: 20px;
@@ -335,43 +203,7 @@ textarea{
   background-color: var(--primary-1-background-active);
 }
 
-.VgfPopupWindow{
-  animation-name: VgfPopupWindowOpen;
-  animation-duration: 0.05s;
-  animation-timing-function: linear;
-}
-
-
-@keyframes VgfPopupWindowOpen{
-  from{
-    opacity: 0;
-    transform: scaleY(0.7) scaleX(0.9) translate(-00px,-20px);
-  }
-  to{
-    opacity: 1;
-    transform: scaleY(1) scaleX(1) translate(0px,0px);
-  }
-}.VgfWorld
-{
-  /* Debugging: see where world is */
-  border: 1px solid red;
-}.VgfNavigationArea{
-  overflow: hidden;
-  background-color: var(--canvas-background);
-}
-
-.VgfNavigationArea, .VgfInteractionArea
-  {
-  width: 100%;
-  height: 100%;
-
-  /* needed to allow height=100% */
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}.VgfWidget_dragging{
-  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.205);
-}/**
+/**
  CSS-File for general CSS
 **/
 
@@ -379,6 +211,24 @@ textarea{
   resize: both;
   overflow:auto;
 }
+.td_expanderButton
+{
+  width: 1px;
+  vertical-align: top;
+}
+
+.td_expanderButton .button_flat
+{
+  padding-bottom: 7px;
+}
+.VgfLine
+{
+  pointer-events: none;
+  position: relative;
+  width: 0px;
+  height: 0px;
+}
+
 .VgfMenu{
   border: 1px solid var(--primary-1-border);
   background: var(--primary-1-background);
@@ -418,16 +268,53 @@ textarea{
   border-bottom: 1px solid #2b71bc;
   background: linear-gradient(#5ca9f9, #3b8fe8);
   color: whitesmoke;
-}.td_expanderButton
-{
-  width: 1px;
-  vertical-align: top;
+}
+.VgfNavigationArea{
+  overflow: hidden;
+  background-color: var(--canvas-background);
 }
 
-.td_expanderButton .button_flat
-{
-  padding-bottom: 7px;
-}/* ****************************************************
+.VgfNavigationArea, .VgfInteractionArea
+  {
+  width: 100%;
+  height: 100%;
+
+  /* needed to allow height=100% */
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.VgfPopupWindow{
+  animation-name: VgfPopupWindowOpen;
+  animation-duration: 0.05s;
+  animation-timing-function: linear;
+}
+
+
+@keyframes VgfPopupWindowOpen{
+  from{
+    opacity: 0;
+    transform: scaleY(0.7) scaleX(0.9) translate(-00px,-20px);
+  }
+  to{
+    opacity: 1;
+    transform: scaleY(1) scaleX(1) translate(0px,0px);
+  }
+}
+.VgfWidget_dragging{
+  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.205);
+}
+.VgfWindow_focussed{
+  /*box-shadow: inset 0px 0px 7px #00FF5555;*/
+  box-shadow: 0px 0px 7px #00000055;
+}
+
+
+.VgfWindow{
+  display: inline-block;
+  position: absolute;
+}
+/* ****************************************************
 *******************************************************
 ************* Window Mgr Windows **********************
 *******************************************************
@@ -548,115 +435,243 @@ textarea{
   /* Border like for class diagrams */
   /* border-top: 1px solid rgba(200, 200, 200); */
   padding:2px;
-}.VgfWindow_focussed{
-  /*box-shadow: inset 0px 0px 7px #00FF5555;*/
-  box-shadow: 0px 0px 7px #00000055;
 }
-
-
-.VgfWindow{
-  display: inline-block;
-  position: absolute;
-}.VgfLine
+.VgfWorld
 {
+  /* Debugging: see where world is */
+  border: 1px solid red;
+}
+#connectionCanvas{
+  z-index: 2;
+  position: absolute;
+  top:0;
+  left:0;
+  border: 0px;
   pointer-events: none;
+}
+.btnOpenDefinition {
+  /*float: right;*/
+  vertical-align: middle;
+  border-radius: 2px;
+  font-family: "Arial";
+  border:  none;
+  background: none;
+  color: var(--primary-1-foreground);
+  width: 13px;
+  height: 13px;
+  cursor:pointer;
+  padding: 0px;
+  padding-bottom: 1px;
+
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btnOpenDefinition:active{
+  border-top-color:#000;
+  border-left-color:#000;
+  border-bottom-color:#CCC;
+  border-right-color:#CCC;
+}
+
+.btnOpenDefinition:focus{
+  border: 1px rgb(0, 133, 185) dotted;
+  border-radius: 2px;
+  outline: none;
+}
+
+.VpwBtnOpenDefinition_ON,
+.VpwBtnOpenDefinition_ON:focus,
+.VpwBtnOpenDefinition_ON:hover
+{
+  background-color: var(--definition-connector-circle-color);
+  border: 0px;
+  border-radius: 10px;
+}
+.VpwButtonMovableBtn,
+.VpwButtonMovable {
+  padding-left: 1px;
+  padding-right: 1px;
+  margin: 0px;
+  /*border: 1px solid grey;*/
+  border-width: 1px;
+  border-radius: 2px;
+  width: 13px;
+  height: 13px;
+  color: var(--primary-1-foreground);
+  border-color: var(--primary-1-border);
+  background: var(--primary-1-background);
+
+  /* remove focus shadow*/
+  box-shadow: none;
+}
+
+.VpwButtonMovableBtn span {
   position: relative;
-  width: 0px;
-  height: 0px;
-}/*!
-  Theme: Default
-  Description: Original highlight.js style
-  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
-  Maintainer: @highlightjs/core-team
-  Website: https://highlightjs.org/
-  License: see project LICENSE
-  Touched: 2021
-*/
-pre code.hljs{display:block;overflow-x:auto;padding:1em}
-code.hljs{padding:3px 5px}
-
-.hljs-emphasis{font-style:italic}
-.hljs-strong{font-weight:700}
-
-.hljs{background:#f0f0f0;color:#444}
-.hljs-comment{color:#078007}
-.hljs-punctuation,.hljs-tag{color:#444a}
-.hljs-tag .hljs-attr,.hljs-tag .hljs-name{color:#444}
-.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-name,.hljs-selector-tag{color:#3507fe;}
-.hljs-deletion,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-string,.hljs-template-tag,.hljs-type{color:#800}
-.hljs-number{color:#098658;}
-.hljs-section,.hljs-title{color:#800;font-weight:700}
-.hljs-link,.hljs-operator,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{color:#bc6060}
-.hljs-literal{color:#78a960}
-.hljs-addition,.hljs-bullet,.hljs-code{color:#397300}
-.hljs-built_in {color:rgb(59, 55, 0)}
-.hljs-meta{color:#1f7199}
-.hljs-meta .hljs-string{color:#4d99bf}
-
-
-/*!
-  Theme: dark
-  Description: Dark Theme partly copied from VSCode dark theme
-  Author: DarkTrick(created content here)
-*/
-.theme-dark .hljs {
-  background: #2b2b2b;
-  color: #f8f8f2;
-}
-
-.theme-dark .hljs-comment,
-.theme-dark .hljs-quote {
-  color: #6a9955;
-}
-
-.theme-dark .hljs-variable,
-.theme-dark .hljs-template-variable,
-.theme-dark .hljs-tag,
-.theme-dark .hljs-name,
-.theme-dark .hljs-selector-id,
-.theme-dark .hljs-selector-class,
-.theme-dark .hljs-regexp,
-.theme-dark .hljs-deletion {
-  color: #90d9da;
+  top: -4px;
 }
 
 
-.theme-dark .hljs-number,
-.theme-dark .hljs-built_in,
-.theme-dark .hljs-literal,
-.theme-dark .hljs-type,
-.theme-dark .hljs-params,
-.theme-dark .hljs-meta,
-.theme-dark .hljs-link {
-  color: #a7cb8e;
+
+.VpwButtonMovableBtn:hover {
+  background-color: var(--primary-1-background-hover);
 }
 
-.theme-dark .hljs-params {
-  color: #729db4;
+
+.VpwButtonMovableBtn button::-moz-focus-inner {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+}
+.VpwCodeEditor{
+  font-family: monospace;
+  line-height: 130%;
+
+  background-color: var(--editor-background);
+
+  margin-left: 5px;
+  margin-bottom: 5px;
+  width:calc(100% - 10px);
+
+  white-space: pre;
+
+  padding-right: 3px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+
+  border-width: 0px;
+  /* border: 0px solid black; */
+
+  overflow: auto; /* <=> scroll + hidden*/
+
+  counter-reset: vpwcodeeditorline;
 }
 
-.theme-dark .hljs-attr,
-.theme-dark .hljs-attribute {
-  color: #9cdcf0;
+.VpwCodeEditor div:before {
+  content: counter(vpwcodeeditorline);
+  font-size: 80%;
+  color: var(--editor-line-numbers);
+  vertical-align: middle;
 }
 
-.theme-dark .hljs-string,
-.theme-dark .hljs-symbol,
-.theme-dark .hljs-bullet,
-.theme-dark .hljs-addition {
-  color: #c97e63;
+.VpwCodeEditor div{
+  counter-increment: vpwcodeeditorline;
+}
+.VpwMessageWindow .Window_Titlearea
+{
+  padding-right: 12px;
+  white-space: nowrap;
+  font-weight: bold;
+
+  min-width: 200px;
 }
 
-.theme-dark .hljs-title,
-.theme-dark .hljs-section {
-  color: #f0c674;
+.VpwMessageWindow.Error {
+  background-color: var(--message-error-background);
+  color: var(--message-error-foreground);
 }
 
-.theme-dark .hljs-keyword,
-.theme-dark .hljs-selector-tag {
-  color: #569cd6;
+.VpwMessageWindow.Error .Window_Titlearea::before {
+  content: "🧐 ";
 }
 
-.theme-dark .hljs-function {
-  color: #dcdcaa;
+.VpwMessageWindow.Warning
+{
+  background-color:var(--message-warning-background);
+  color: var(--message-warning-foreground);
+}
+
+.VpwMessageWindow.Warning .Window_Titlearea::before {
+  content: "🤔 ";
+}
+
+.VpwMessageWindow.Info
+{
+  background-color: var(--message-info-background);
+  color: var(--message-info-foreground);
+}
+.VpwMessageWindow.Info .Window_Titlearea::before {
+  content: "🤫 ";
+}
+
+
+.VpwMessageWindow .Window_Clientarea
+{
+  padding-top:    7px;
+  padding-bottom: 7px;
+  padding-left:  12px;
+  padding-right: 12px;
+}
+.Window_Clientarea_BlocksArea{
+  background-color: rgba(187, 187, 187, 0.082);
+  padding:2px;
+}
+
+.Window_Clientarea_OpenDeclarationBlock{
+  /*border-style: solid;
+  border-width: 1px;
+  border-color: grey white white grey;*/
+  font-family: monospace;
+
+  white-space: nowrap;
+
+  padding-top:7px;
+  padding-bottom:7px;
+  padding-left:10px;
+  padding-right:10px;
+  margin: 3px;
+
+  background: var(--declaration-button-background);
+  border-radius: 3px;
+
+  user-select: none;
+
+}
+
+.Window_Clientarea_OpenDeclarationBlock:hover{
+  background: var(--declaration-button-background-hover);
+}
+
+.Window_Clientarea_OpenDeclarationBlock:active{
+  background:  var(--declaration-button-background-active);
+}
+
+
+.viewEntityRepr_OutlineKindIndicator {
+  color: var(--source-code-entity-class);
+  font-size: 80%;
+  position:relative;
+  top: -1px;
+  left: -1.5px;
+  display: inline-block;
+  border-right: 1px solid black;
+  padding-right: 2px;
+  margin-right: 1px;
+  /*border-radius: 10px;
+  min-width: 5px;
+  margin-right: 2px;
+
+  padding-left:4px;
+  box-shadow: 0px 0px 1px black;*/
+}
+.VpwViewEntityWindow {
+  animation-name: VpwViewEntityWindowOpen;
+  animation-duration: 0.3s;
+}
+
+@keyframes VpwViewEntityWindowOpen{
+
+  from{
+    opacity: 0;
+    transform: scaleY(0.9) scaleX(1.1) translate(-20%,0px);
+  }
+  to{
+    opacity: 1;
+    transform: scaleY(1) scaleX(1) translate(0px,0px);
+  }
 }

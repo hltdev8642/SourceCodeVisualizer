@@ -1,6 +1,7 @@
 
 import {VpLspExtenderCurlyBraces} from './lspextender_curlyBraces';
 import {VpLspExtenderPython} from './lspextenderpython';
+import {VpLspExtenderLua} from './lspextenderlua';
 import {VpLspExtenderProvider} from '../outlineproviderAPI/lspextenderprovider';
 import { VpOutlineProvider } from '../outlineproviderAPI/outlineprovider';
 
@@ -27,6 +28,7 @@ export function activate(vscode: any)
     registerLspExtender (vscode, "Javascript", new VpLspExtenderCurlyBraces ("javascript"));
     registerLspExtender (vscode, "Java",       new VpLspExtenderCurlyBraces ("java"));
     registerLspExtender (vscode, "Python",     new VpLspExtenderPython ());
+    registerLspExtender (vscode, "Lua",        new VpLspExtenderLua());
   }
 }
 

@@ -42,6 +42,7 @@ Don't change code while working within the diagram (this problem will be fixed i
 
 Currently the following languages are supported:
 - Python
+- Lua (requires a Lua language extension like "Lua Language Server" by sumneko)
 - C/C++ (beware, due to VSCode's bad support for C/C++ you might experience difficulties)
 - Php (experimental)
 - Javascript (experimental)
