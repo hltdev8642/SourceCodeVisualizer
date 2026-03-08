@@ -8,6 +8,8 @@ import * as utils from '../../../utils'
 import {getTestDirPath} from "../../main"
 import {MemoryFile} from "../memoryfile"
 import { VpLspExtenderCurlyBraces } from '../../../outlineproviders/lspextender_curlyBraces';
+import { VpLspExtenderPapyrus } from '../../../outlineproviders/lspextender_papyrus';
+import * as Outline from '../../../outlineproviderAPI/SymbolDefinition';
 import { OutlineUtils } from '../../../outlineproviderAPI/utils/outlineutils';
 import { DocumentSymbolX } from '../../../outlineproviderAPI/utils/documentsymbolx';
 
@@ -110,6 +112,8 @@ suite('getLanguageSpecificSymbolInformation()', async () =>
                                 new VpLspExtenderCurlyBraces ("typescript"));
 
     // check
+    assert.strictEqual (actual !== null, true, "Symbol should not be null");
+    actual = actual!;
     let actual_parts = actual.parts;
 
     assert.strictEqual (actual_parts.length, 1, "Number of parts");
@@ -204,6 +208,8 @@ suite('getLanguageSpecificSymbolInformation()', async () =>
                                 new VpLspExtenderCurlyBraces ("typescript"));
 
     // check
+    assert.strictEqual (actual !== null, true, "Symbol should not be null");
+    actual = actual!;
     let actual_parts = actual.parts;
 
     assert.strictEqual (actual_parts.length, 2, "Number of parts");
@@ -243,6 +249,8 @@ suite('getLanguageSpecificSymbolInformation()', async () =>
                                 new VpLspExtenderCurlyBraces ("typescript"));
 
     // check
+    assert.strictEqual (actual !== null, true, "Symbol should not be null");
+    actual = actual!;
     let actual_parts = actual.parts;
     assertx.range_equals (actual_parts[1].displayTextRange,
                           utils.range_new (3, 5, 3, 9), "displayTextRange of aa()");
@@ -280,10 +288,70 @@ suite('getLanguageSpecificSymbolInformation()', async () =>
                                 new VpLspExtenderCurlyBraces ("typescript"));
 
     // check
+    assert.strictEqual (actual !== null, true, "Symbol should not be null");
+    actual = actual!;
     let actual_parts = actual.parts;
     assertx.range_equals (actual_parts[1].displayTextRange,
                           utils.range_new (3, 13, 3, 21), "displayTextRange of aa()");
 
+  });
+
+});
+
+
+// -----------------------------------------------------------------------------
+// Papyrus provider tests
+// -----------------------------------------------------------------------------
+suite('09 Papyrus provider', () =>
+{
+  test('01 simple function head/body', async () =>
+  {
+    // setup
+    let content = "" +
+        "Function Foo()\n" +
+        "  ; body\n" +
+        "EndFunction\n";
+
+    let doc = await createMemDocument(content);
+    let full_range = utils.range_new(0,0,2,12);
+    let name_range = utils.range_new(0,0,0,12);
+    let symbol = new vscode.DocumentSymbol("Foo","",
+                                            vscode.SymbolKind.Function,
+                                            full_range,
+                                            name_range);
+
+    let subject = new VpLspExtenderPapyrus();
+    let actual = subject.getLanguageSpecificSymbolInformation(doc, symbol);
+
+    assertx.range_equals(actual[0], name_range, "head range");
+    assertx.range_equals(actual[1], full_range, "body range");
+  });
+
+  test('02 isDefinition detection', async () =>
+  {
+    let content = "Function test()\nEndFunction";
+    let doc = await createMemDocument(content);
+    let subject = new VpLspExtenderPapyrus();
+
+    assert.strictEqual(subject.isDefinition(doc, new vscode.Position(0,0)), true);
+    assert.strictEqual(subject.isDefinition(doc, new vscode.Position(1,0)), false);
+  });
+
+  test('03 provideOutlineForRange produces symbols', async () =>
+  {
+    let content = "" +
+        "Function Foo()\n" +
+        "EndFunction\n" +
+        "Event OnLoad()\n" +
+        "EndEvent\n";
+    let doc = await createMemDocument(content);
+    let subject = new VpLspExtenderPapyrus();
+
+    let range = utils.range_new(0,0,3,9);
+    let out = await subject.provideOutlineForRange(doc, range);
+    assert.strictEqual(out.length, 2, "two symbols should be returned");
+    assert.strictEqual((out[0] as Outline.Symbol).kind, 'function');
+    assert.strictEqual((out[1] as Outline.Symbol).kind, 'event');
   });
 
 });

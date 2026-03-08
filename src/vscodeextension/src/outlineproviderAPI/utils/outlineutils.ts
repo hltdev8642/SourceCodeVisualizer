@@ -235,8 +235,9 @@ export class OutlineUtils {
     // Outline that range (Result: one outlined symbol)
 
     let filepath = documentSymbolX.uri.toString ()
-    let symbol: Outline.Symbol
-        = this.documentSymbol2outlineSymbol (document, documentSymbolX, provider);
+    let symbol = this.documentSymbol2outlineSymbol (document, documentSymbolX, provider);
+
+    if (!symbol) return null;
 
     symbol.uri = filepath ;
 
@@ -255,6 +256,16 @@ export class OutlineUtils {
                                           provider: VpLspExtenderProvider)
     : Outline.OutlineRange[]
   {
+    // Debug: dump children symbols for Lua to trace unexpected splits
+    try {
+      if (provider.getLanguageStr && provider.getLanguageStr() === 'lua') {
+        const childInfo = (documentSymbolsInRange || []).map(s => ({ name: s.name, kind: s.kind, range: { start: { line: s.range.start.line, character: s.range.start.character }, end: { line: s.range.end.line, character: s.range.end.character } } }));
+        // eslint-disable-next-line no-console
+        console.warn('[VpOutline] _provideOutlineForRange LUA children:', { file: document.uri.toString(), range: { start: { line: range.start.line, char: range.start.character }, end: { line: range.end.line, char: range.end.character } }, childCount: childInfo.length, children: childInfo });
+      }
+    } catch (e) {
+      // ignore
+    }
     // documentSymbolsInRange are sorted alphabetically.
     //  we need to sort them by position
     utils.documentSymbolArray_sortByRange (documentSymbolsInRange);
@@ -312,6 +323,9 @@ export class OutlineUtils {
           continue;
         }
 
+        // Lua-specific: allow outlining of control structures like if/for/while/repeat
+        // within function bodies for better visualization
+
 
         // add raw code area
         if (childSymbol.range.start.line != 0)
@@ -338,7 +352,9 @@ export class OutlineUtils {
           // TODO:optimize: just extract entity head ( not the full definition )
           let docSymX = new DocumentSymbolX (childSymbol, document.uri);
           let childOutline = this.documentSymbol2outlineSymbol (document, docSymX, provider);
-          parts.push (childOutline);
+          if (childOutline) {
+            parts.push (childOutline);
+          }
 
           ++childIdx;
         }
@@ -372,6 +388,18 @@ export class OutlineUtils {
 
     let documentSymbols = await this.getDocumentSymbols (document.uri);
     if (!documentSymbols) documentSymbols = [];
+
+    // If no LSP symbols are available, let the provider attempt its own parsing.
+    if (documentSymbols.length === 0 && provider.getLanguageStr() === 'papyrus') {
+      try {
+        filesymbol.parts = await provider.provideOutlineForRange(
+                            document,
+                            utils.document_getRange(document));
+        return filesymbol;
+      } catch (e) {
+        // fall back to raw text handling below
+      }
+    }
 
     filesymbol.parts = this._provideOutlineForRange (
                       document,
@@ -465,7 +493,8 @@ export class OutlineUtils {
       return [await this.provideDocumentOutline (provider, document)];
 
     let parentX = new DocumentSymbolX (parent, document.uri);
-    return [this.documentSymbol2outlineSymbol (document, parentX, provider)];
+    let sym = this.documentSymbol2outlineSymbol (document, parentX, provider);
+    return sym ? [sym] : [];
   }
 
 
@@ -476,7 +505,7 @@ export class OutlineUtils {
   public static documentSymbol2outlineSymbol(document: vscode.TextDocument,
                                             docSymX: DocumentSymbolX,
                                             provider: VpLspExtenderProvider)
-                                              : Outline.Symbol
+                                              : Outline.Symbol | null
   {
     let docSymbol = docSymX.documentSymbol;
     let uri = docSymX.uri;
@@ -492,13 +521,43 @@ export class OutlineUtils {
     symbol.totalRange = docSymbol.range;
     symbol.uri = uri.toString ();
 
-    let ranges = provider.getLanguageSpecificSymbolInformation (document, docSymbol);
+    let ranges: any[] = [null, null, []];
+    try {
+      ranges = provider.getLanguageSpecificSymbolInformation (document, docSymbol);
+    } catch (e) {
+      // Provider failed to parse — fallback to using the entire symbol range for both head and body
+      ranges = [docSymbol.range, docSymbol.range, []];
+      // Optionally log the error for debugging
+      try {
+        // eslint-disable-next-line no-console
+        console.warn('[VpOutline] Provider error for symbol:', docSymbol.name, (e as Error).message || e);
+      } catch (logErr) {
+        // ignore
+      }
+    }
     let range_head = ranges[0];
     let range_body = ranges[1];
     let attributes = ranges[2];
 
+    // Debug: log language-specific ranges for this symbol to help trace incorrect splits
+    try {
+      const fmt = (r: vscode.Range | null) => {
+        if (!r) return null;
+        return { start: { line: r.start.line, char: r.start.character }, end: { line: r.end.line, char: r.end.character } };
+      };
+      // eslint-disable-next-line no-console
+      console.warn('[VpOutline] documentSymbol2outlineSymbol:', { name: docSymbol.name, totalRange: fmt(docSymbol.range), range_head: fmt(range_head), range_body: fmt(range_body), language: provider.getLanguageStr() });
+    } catch (e) {
+      // ignore logging errors
+    }
+
     symbol.displayTextRange = range_head;
     symbol.attributes = attributes;
+
+    // Skip symbols with empty body if they are not functions (e.g., empty control structures)
+    if (range_body && document.getText(range_body).trim() === "" && symbol.kind !== 'function') {
+      return null;
+    }
 
     symbol.parts = this._provideOutlineForRange (
                               document,

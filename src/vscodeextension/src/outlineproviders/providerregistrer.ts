@@ -2,6 +2,7 @@
 import {VpLspExtenderCurlyBraces} from './lspextender_curlyBraces';
 import {VpLspExtenderPython} from './lspextenderpython';
 import {VpLspExtenderLua} from './lspextenderlua';
+import {VpLspExtenderPapyrus} from './lspextender_papyrus';
 import {VpLspExtenderProvider} from '../outlineproviderAPI/lspextenderprovider';
 import { VpOutlineProvider } from '../outlineproviderAPI/outlineprovider';
 
@@ -29,6 +30,8 @@ export function activate(vscode: any)
     registerLspExtender (vscode, "Java",       new VpLspExtenderCurlyBraces ("java"));
     registerLspExtender (vscode, "Python",     new VpLspExtenderPython ());
     registerLspExtender (vscode, "Lua",        new VpLspExtenderLua());
+    // support for Skyrim Papyrus scripts (.psc)
+    registerLspExtender (vscode, "papyrus",    new VpLspExtenderPapyrus());
   }
 }
 
